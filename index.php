@@ -63,7 +63,7 @@
         <header>
             <div class="video-container">
                 <video autoplay loop muted playsinline>
-                    <source src="assets/video/bg_video.mp4" type="video/mp4">
+                    <source src="assets/video/bg-video.mp4" type="video/mp4">
                 </video>
             </div>
             <div class="container header__container">
