@@ -53,7 +53,7 @@ $superAdmin = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM superadmin W
                 <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> My Profile</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a class="dropdown-item text-danger" href="../login/logout_admin.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
     </div>

@@ -55,7 +55,7 @@ include_once('booking/dashboard_data.php');
                 <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i> My Profile</a></li>
                 <li><a class="dropdown-item" href="#"><i class="fas fa-key"></i> Change Password</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="../logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a class="dropdown-item text-danger" href="../login/logout_admin.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>
     </div>
