@@ -25,7 +25,7 @@ $recentBookings = mysqli_query($conn,
      JOIN ticketcategory tc ON td.TicketType = tc.CategoryType
      JOIN member m ON t.MemCode = m.MemCode
      LEFT JOIN payment p ON p.TransactionCode = t.TransactionCode
-     ORDER BY t.TransactionDate DESC, t.TransactionCode DESC
+     ORDER BY t.TransactionCode DESC
      LIMIT 5"
 );
 
@@ -43,7 +43,7 @@ $bookings = mysqli_query($conn,
      JOIN transdetail td ON t.TransactionCode = td.TransactionCode
      JOIN member m ON t.MemCode = m.MemCode
      LEFT JOIN payment p ON p.TransactionCode = t.TransactionCode
-     ORDER BY t.TransactionDate DESC, t.TransactionCode ASC"
+     ORDER BY t.TransactionCode ASC"
 );
 ?>
 
