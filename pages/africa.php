@@ -19,7 +19,7 @@
     <nav>
         <ul class="navbar-list">
             <li class="logo">
-                <a href="#">MUSEUM BEKASI</a>
+                <a href="#">MUSEUM-BEKASI</a>
             </li>
             <li class="toggle" id="toggle-menu">
                 <img src="assets/img/burger-menu.png" alt="Bars">
