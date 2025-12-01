@@ -1,13 +1,11 @@
-name: Auto Deploy to Docker
+name: Manual Deploy to Docker
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, aidan-laptop]
+    runs-on: [self-hosted, azka-laptop]
 
     steps:
       - name: Checkout repository
