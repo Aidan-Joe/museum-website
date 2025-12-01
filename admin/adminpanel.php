@@ -191,7 +191,6 @@ include_once('booking/dashboard_data.php');
                             <td>Rp<?php echo number_format((float)$b['Total'],2); ?></td>
                             <td><span class="badge <?php echo $badgeClass; ?>"><?php echo $status; ?></span></td>
                             <td>
-                                <button class="btn btn-sm btn-info"><i class="fas fa-eye"></i></button>
                                 <button class="btn btn-sm btn-primary btn-edit-booking" data-bs-toggle="modal" data-bs-target="#editBookingModal"><i class="fas fa-edit"></i></button>
                                 <a href="?delete_booking=<?php echo urlencode($b['BookingID']); ?>" onclick="return confirm('Delete this booking?')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                             </td>
