@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: azka-laptop
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -34,4 +34,5 @@ jobs:
         run: docker compose up -d
 
       - name: Check running containers
+
         run: docker ps -a
