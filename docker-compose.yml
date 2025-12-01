@@ -1,6 +1,5 @@
 
 services:
-  # Nginx Web Server (Custom Build)
   nginx:
     build:
       context: .
@@ -14,7 +13,6 @@ services:
     networks:
       - app-network
 
-  # PHP-FPM (untuk Nginx)
   php:
     build:
       context: .
@@ -33,7 +31,6 @@ services:
     networks:
       - app-network
 
-  # MySQL Database Server
   mysql:
     image: mysql:8.0
     environment:
@@ -48,7 +45,6 @@ services:
     networks:
       - app-network
 
-  # phpMyAdmin untuk Database Management
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
@@ -61,11 +57,9 @@ services:
     networks:
       - app-network
 
-# Persistent Volume untuk MySQL Data
 volumes:
   mysql_data:
 
-# Custom Network untuk Container Communication
 networks:
   app-network:
     driver: bridge
