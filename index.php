@@ -27,7 +27,7 @@
         <nav>
             <ul class="navbar-list">
                 <li class="logo">
-                    <a href="#">MUSEUM BEKASI</a>
+                    <a href="#">MUSEUM CCIT</a>
                 </li>
                 <li class="toggle" id="toggle-menu">
                     <img src="img/burger-menu.png" alt="Bars">
@@ -217,7 +217,7 @@
                         <a href="pages/mummy.php">
                             <div class="carousel-item">
                                 <h3>Inner Coffin</h3>
-                                <img src="assets/img/inner-coffin.jpg" alt="Ceramic Cat">
+                                <img src="assets/img/inner-coffin.png" alt="Ceramic Cat">
                             </div>
                         </a>
                         <a href="pages/goblet.php">
@@ -229,7 +229,7 @@
                         <a href="pages/papua.php">
                             <div class="carousel-item">
                                 <h3>Papua Shield</h3>
-                                <img src="assets/img/shield.jpg" alt="Ceramic Cat">
+                                <img src="assets/img/shield.png" alt="Ceramic Cat">
                             </div>
                         </a>
                     </div>
