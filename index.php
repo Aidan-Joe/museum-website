@@ -27,7 +27,7 @@
         <nav>
             <ul class="navbar-list">
                 <li class="logo">
-                    <a href="#">MUSEUM BEKASI</a>
+                    <a href="#">MUSEUM CCIT</a>
                 </li>
                 <li class="toggle" id="toggle-menu">
                     <img src="img/burger-menu.png" alt="Bars">
