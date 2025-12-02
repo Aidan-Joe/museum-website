@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, aidan-laptop]
+    runs-on: aidan-laptop
 
     steps:
       - name: Checkout repository
