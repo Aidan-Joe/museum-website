@@ -1,4 +1,4 @@
-name: Deploy to Docker
+name: Auto Deploy to Docker
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: aidan-laptop
 
     steps:
       - name: Checkout repository
