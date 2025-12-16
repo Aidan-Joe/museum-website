@@ -1,44 +1,45 @@
 <?php
 session_start();
-include('../connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: ../login_admin.php");
     exit;
 }
 
-$email = mysqli_real_escape_string($conn, $_POST['email']);
-$password = mysqli_real_escape_string($conn, $_POST['password']);
+$email = $_POST['email'];
+$password = $_POST['password'];
 
-$query_superadmin = mysqli_query($conn, "SELECT * FROM superadmin WHERE superadmin_email='$email' AND Password='$password' AND Status='Active'");
+$apiUrl = "http://springboot:8080/api/admins/login";
 
-if (mysqli_num_rows($query_superadmin) > 0) {
-    $superadmin = mysqli_fetch_assoc($query_superadmin);
-    
-    $_SESSION['status'] = 'login';
-    $_SESSION['role'] = 'superadmin';
-    $_SESSION['SuperAdminCode'] = $superadmin['SuperAdminCode'];
-    $_SESSION['Name'] = $superadmin['Name'];
-    
-    header("Location: ../superadmin/superadminpanel.php");
+$data = json_encode([
+    "adminEmail" => $email,
+    "password" => $password
+]);
+
+$ch = curl_init($apiUrl);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+if ($httpCode !== 200 || empty($response)) {
+    header("Location: login_admin.php?pesan=gagal");
     exit;
 }
 
-$query_admin = mysqli_query($conn, "SELECT * FROM admin WHERE admin_email='$email' AND Password='$password' AND Status='Active'");
+$admin = json_decode($response, true);
 
-if (mysqli_num_rows($query_admin) > 0) {
-    $admin = mysqli_fetch_assoc($query_admin);
-    
-    $_SESSION['status'] = 'login';
-    $_SESSION['role'] = 'admin';
-    $_SESSION['AdminCode'] = $admin['AdminCode'];
-    $_SESSION['AdminName'] = $admin['AdminName'];
-    $_SESSION['SuperAdminCode'] = $admin['SuperAdminCode'];
-    
-    header("Location: ../admin/adminpanel.php");
-    exit;
-}
+$_SESSION['status'] = 'login';
+$_SESSION['role'] = 'admin';
+$_SESSION['AdminCode'] = $admin['adminCode'];
+$_SESSION['AdminName'] = $admin['adminName'];
+$_SESSION['SuperAdminCode'] = $admin['superAdminCode'];
 
-header("Location: login_admin.php?pesan=gagal");
+header("Location: ../admin/adminpanel.php");
 exit;
-?>
