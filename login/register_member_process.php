@@ -1,49 +1,57 @@
 <?php
 session_start();
-include('../connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: register_member.php");
     exit;
 }
-mysqli_query($conn, "CALL GenerateMemberCode(@newCode)");
-    $result = mysqli_query($conn, "SELECT @newCode AS newCode");
-    $row = mysqli_fetch_assoc($result);
-    $memcode = $row['newCode'];
 
-$member_name = mysqli_real_escape_string($conn, $_POST['member_name']);
-$member_email = mysqli_real_escape_string($conn, $_POST['member_email']);
-$gender = mysqli_real_escape_string($conn, $_POST['gender']);
-$address = mysqli_real_escape_string($conn, $_POST['address']);
-$phone_number = mysqli_real_escape_string($conn, $_POST['phone_number']);
-$password = mysqli_real_escape_string($conn, $_POST['password']);
-$confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
+$member_name = $_POST['member_name'];
+$member_email = $_POST['member_email'];
+$gender = $_POST['gender'];
+$address = $_POST['address'];
+$phone_number = $_POST['phone_number'];
+$password = $_POST['password'];
+$confirm_password = $_POST['confirm_password'];
 
 if ($password !== $confirm_password) {
     header("Location: register_member.php?pesan=password_mismatch");
     exit;
 }
 
-
-$check_email = mysqli_query($conn, "SELECT * FROM member WHERE member_email='$member_email'");
-if (mysqli_num_rows($check_email) > 0) {
-    header("Location: register_member.php?pesan=email_exists");
-    exit;
-}
-
 if (!in_array($gender, ['Male', 'Female'])) {
-    header("Location: register_member.php?pesan=error");
+    header("Location: register_member.php?pesan=error_gender");
     exit;
 }
 
-$query = "INSERT INTO member (MemCode, MemberName, Gender, Address, PhoneNumber, member_email, Password) 
-          VALUES ('$memcode', '$member_name', '$gender', '$address', '$phone_number', '$member_email', '$password')";
+$payload = json_encode([
+    "memberName" => $member_name,
+    "memberEmail" => $member_email,
+    "gender" => $gender,
+    "address" => $address,
+    "phoneNumber" => $phone_number,
+    "password" => $password
+]);
 
-if (mysqli_query($conn, $query)) {
+$ch = curl_init("http://172.31.208.1:8080/api/members/register");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json"
+    ],
+    CURLOPT_POSTFIELDS => $payload
+]);
+
+$response = curl_exec($ch);
+curl_close($ch);
+
+$result = json_decode($response, true);
+
+if ($result && isset($result['success']) && $result['success'] === true) {
     header("Location: login_member.php?success=Registration successful! Please login.");
     exit;
-} else {
-    header("Location: register_member.php?pesan=error");
-    exit;
 }
-?>
+
+header("Location: register_member.php?pesan=error");
+exit;

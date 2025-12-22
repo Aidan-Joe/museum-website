@@ -1,29 +1,40 @@
 <?php
 session_start();
-include('../connection.php');
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: login_member.php");
-    exit;
-}
 
-$email = mysqli_real_escape_string($conn, $_POST['email']);
-$password = mysqli_real_escape_string($conn, $_POST['password']);
+$email = trim($_POST['email']);
+$password = trim($_POST['password']);
 
-$query_member = mysqli_query($conn, "SELECT * FROM member WHERE member_email='$email' AND Password='$password'");
+$payload = json_encode([
+    "email" => $email,
+    "password" => $password
+]);
 
-if (mysqli_num_rows($query_member) > 0) {
-    $member = mysqli_fetch_assoc($query_member);
-    
+$ch = curl_init("http://172.31.208.1:8080/api/members/login");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json"
+]);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+$result = json_decode($response, true);
+
+if ($httpCode === 200 && $result['success']) {
+    $m = $result['data'];
+
     $_SESSION['status'] = 'login';
     $_SESSION['role'] = 'member';
-    $_SESSION['MemCode'] = $member['MemCode'];
-    $_SESSION['MemberName'] = $member['MemberName'];
-    $_SESSION['member_email'] = $member['member_email'];
-    
+    $_SESSION['MemCode'] = $m['memCode'];
+    $_SESSION['MemberName'] = $m['memberName'];
+    $_SESSION['member_email'] = $m['memberEmail'];
+
     header("Location: ../pages/booking.php");
     exit;
 }
 
 header("Location: login_member.php?pesan=gagal");
 exit;
-?>

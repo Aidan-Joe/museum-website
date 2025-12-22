@@ -9,37 +9,59 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $email = $_POST['email'];
 $password = $_POST['password'];
 
-$apiUrl = "http://springboot:8080/api/admins/login";
-
-$data = json_encode([
-    "adminEmail" => $email,
+$payload = json_encode([
+    "email" => $email,
     "password" => $password
 ]);
 
-$ch = curl_init($apiUrl);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
-    "Content-Type: application/json"
-]);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+function callApi($url, $payload) {
+    $ch = curl_init($url);
 
-$response = curl_exec($ch);
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST => true,
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: application/json"
+        ],
+        CURLOPT_POSTFIELDS => $payload
+    ]);
 
-if ($httpCode !== 200 || empty($response)) {
-    header("Location: login_admin.php?pesan=gagal");
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    return json_decode($response, true);
+}
+
+$superadminApi = "http://172.31.208.1:8080/api/superadmin/login";
+$result = callApi($superadminApi, $payload);
+
+if ($result && isset($result['success']) && $result['success'] === true) {
+    $sa = $result['data'];
+
+    $_SESSION['status'] = 'login';
+    $_SESSION['role'] = 'superadmin';
+    $_SESSION['SuperAdminCode'] = $sa['superAdminCode'];
+    $_SESSION['Name'] = $sa['name'];
+
+    header("Location: ../superadmin/superadminpanel.php");
     exit;
 }
 
-$admin = json_decode($response, true);
+$adminApi = "http://172.31.208.1:8080/api/admins/login";
+$result = callApi($adminApi, $payload);
 
-$_SESSION['status'] = 'login';
-$_SESSION['role'] = 'admin';
-$_SESSION['AdminCode'] = $admin['adminCode'];
-$_SESSION['AdminName'] = $admin['adminName'];
-$_SESSION['SuperAdminCode'] = $admin['superAdminCode'];
+if ($result && isset($result['success']) && $result['success'] === true) {
+    $admin = $result['data'];
 
-header("Location: ../admin/adminpanel.php");
+    $_SESSION['status'] = 'login';
+    $_SESSION['role'] = 'admin';
+    $_SESSION['AdminCode'] = $admin['adminCode'];
+    $_SESSION['AdminName'] = $admin['adminName'];
+    $_SESSION['SuperAdminCode'] = $admin['superAdminCode'];
+
+    header("Location: ../admin/adminpanel.php");
+    exit;
+}
+
+header("Location: ../login_admin.php?pesan=gagal");
 exit;
