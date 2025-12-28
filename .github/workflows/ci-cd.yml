@@ -1,0 +1,36 @@
+name: Auto Deploy to Docker
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: aidan-laptop
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Ensure Docker is running
+        run: |
+          service docker start || true
+
+      - name: Docker info
+        run: docker info
+
+      - name: Pull latest images
+        run: docker compose pull || true
+
+      - name: Stop existing containers
+        run: docker compose down || true
+
+      - name: Build images
+        run: docker compose build --no-cache
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Check running containers
+        run: docker ps -a
