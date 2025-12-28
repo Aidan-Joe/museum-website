@@ -28,4 +28,12 @@ $stats = [
 $bookingRes = apiGet("http://172.31.208.1:8080/api/bookings");
 $bookings   = $bookingRes['data'] ?? [];
 
-$recentBookings = array_slice($bookings, 0, 5);
+$recentSource = $bookings; 
+
+usort($recentSource, function ($a, $b) {
+    return strtotime($b['visitDate']) <=> strtotime($a['visitDate']);
+});
+
+$recentBookings = array_slice($recentSource, 0, 5);
+
+

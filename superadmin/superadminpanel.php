@@ -330,12 +330,6 @@ if (!empty($_GET['search'])) {
                 <h4>Admin Profile Management</h4>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAdminModal"><i class="fas fa-user-plus"></i> Add Admin</button>
             </div>
-            <div class="d-flex mb-3">
-                <input
-                    id="searchAdmin"
-                    class="form-control me-2"
-                    placeholder="Search admin...">
-            </div>
 
             <div class="card-white shadow-sm mb-3 p-3">
                 <table class="table table-hover mb-0">
