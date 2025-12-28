@@ -27,7 +27,7 @@
         <nav>
             <ul class="navbar-list">
                 <li class="logo">
-                    <a href="#">MUSEUM CCIT</a>
+                    <a href="#">MUSEUM KARAWANG</a>
                 </li>
                 <li class="toggle" id="toggle-menu">
                     <img src="img/burger-menu.png" alt="Bars">
